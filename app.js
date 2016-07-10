@@ -7,10 +7,12 @@ var bodyParser = require('body-parser');
 
 var db = require('./model/db');
 var article = require('./model/articles');
+var user = require('./model/users');
 //var categories = require('./model/categories');
 
 var routes = require('./routes/index');
 var articles = require('./routes/articles');
+var users = require('./routes/users');
 //var users = require('./routes/users');
 
 var app = express();
@@ -29,6 +31,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 app.use('/articles', articles);
+app.use('/users', users);
 //app.use('/categories', categories)
 //app.use('/users', users);
 

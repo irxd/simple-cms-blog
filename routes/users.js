@@ -1,9 +1,48 @@
 var express = require('express');
 var router = express.Router();
+var mongoose = require('mongoose'); 
+var bodyParser = require('body-parser'); 
+var methodOverride = require('method-override');
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
+router.use(bodyParser.urlencoded({ extended: true }));
+router.use(methodOverride(function(req, res) {
+  if (req.body && typeof req.body === 'object' && '_method' in req.body) {
+    var method = req.body._method
+    delete req.body._method
+    return method
+  }
+}));
+
+router.route('/')
+  //Create new user
+  .post(function(req, res) {
+    //Get values from forms in url/articles/new
+    var username = req.body.username;
+    var password = req.body.password;
+    //Create function for mongo
+    mongoose.model('User').create({
+      username : username,
+      password : password
+    }, function (err, user) {
+        if (err) {
+          res.send("POST failed to save data.");
+        } else {
+          //Article succesfully created
+          console.log('POST creating new user: ' + user);
+            res.format({
+              //HTML responds
+              html: function() {
+                res.location("users");
+                //Redirect to url/articles after creating articles
+                res.redirect("/");
+              },
+              //JSON responds
+              json: function() {
+                res.json(user);
+              }
+            });
+        }
+    })
+  });
 
 module.exports = router;

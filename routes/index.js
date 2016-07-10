@@ -36,4 +36,14 @@ router.get('/', function(req, res, next) {
   });
 });
 
+//Page for login
+router.get('/login', function(req, res) {
+  res.render('login', { title: 'Login' });
+});
+
+//Page for signup
+router.get('/signup', function(req, res) {
+  res.render('signup', { title: 'Signup' });
+});
+
 module.exports = router;

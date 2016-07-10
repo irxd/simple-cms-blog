@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  .ui.column.stackable.center.page.grid
+      form.ui.six.wide.column.form.segment#formAddArticle(name="addUser",method="post",action="/users")
+        // login input fields go here
+        .field
+          input#inputUsername(type="text", placeholder="Your username", name="username")
+        .field
+          input#inputPassword(type="password", placeholder="Your password", name="password")
+         button.ui.button#btnSubmit(type="submit") Submit

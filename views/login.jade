@@ -1,0 +1,13 @@
+extends layout
+
+block content
+  .ui.column.stackable.center.page.grid
+      form.ui.six.wide.column.form.segment
+        // login input fields go here
+        .field
+          input#inputUsername(type="text", placeholder="Your username", name="username")
+        .field
+          input#inputBody(type="password", placeholder="Your password", name="password")
+         button.ui.button#btnSubmit(type="submit") Login
+         a(href='/signup')
+           button.ui.button#btnSubmit(type="button") Sign Up
