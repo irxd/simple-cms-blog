@@ -1,0 +1,29 @@
+extends ../layout 
+
+block content
+      .ui.grid
+        .four.wide.column
+          .ui.secondary.vertical.pointing.fluid.menu
+            a.item
+              | All
+            a.item
+              | Posted
+            a.item
+              | Draft
+            a.item(href='/articles/new')
+              | New
+        .twelve.wide.column
+          .ul
+            - each article, i in articles
+                li
+                    = article.title
+                    = article.body
+                    = article.tags
+                    = article._id
+                    form(action='/articles/#{article._id}/edit',method='post',enctype='application/x-www-form-urlencoded')
+                        input(type='hidden',value='DELETE',name='_method')
+                        button(type='submit').
+                            Delete
+                    p 
+                        a(href='/articles/#{article._id}/edit') Edit | 
+                        a(href='/articles/#{article._id}') Show

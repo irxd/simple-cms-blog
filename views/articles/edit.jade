@@ -1,0 +1,17 @@
+extends ../layout
+
+block content
+	h1.
+		Article ID #{article._id}
+	form(action='/articles/#{article._id}/edit',method='post',name='updateArticle',enctype='application/x-www-form-urlencoded')
+		p Title:
+			input#inputTitle(type='text', value='#{article.title}', name='title')
+		p Body:
+			input#inputBody(type='text', value='#{article.body}', name='body')
+		p Tags:
+			input#inputTags(type='text', value='#{article.tags}', name='tags')
+		p
+			input(type='hidden',value='PUT',name='_method')
+		p
+			button#btnSubmit(type='submit').
+				Update

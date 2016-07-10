@@ -1,5 +1,15 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+      .ui.grid
+        .twelve.wide.column
+          ul
+            - each article, i in articles
+                li
+                    = article.title
+                    br
+                    = article.tags
+                    br
+                    a(href='/articles/#{article._id}') Show
+                    br
+                    br

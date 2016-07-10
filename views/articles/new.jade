@@ -1,0 +1,26 @@
+extends ../layout
+
+block content
+      .ui.grid
+        .four.wide.column
+          .ui.secondary.vertical.pointing.fluid.menu
+            a.item
+              | All
+            a.item
+              | Posted
+            a.item
+              | Draft
+            a.item(href='/articles/new')
+              | New
+        .twelve.wide.column
+          form.ui.form#formAddArticle(name="addArticle",method="post",action="/articles")
+            .field
+              label Title
+              input#inputTitle(type="text", placeholder="ex. Black Knight", name="title")
+            .field
+              label Body
+              textarea#inputBody(type="text", placeholder="ex. Once Upon A Time", name="body")
+            .field
+              label Tags
+              input#inputTags(type="text", placeholder="ex. story, tips", name="tags")
+            button.ui.button#btnSubmit(type="submit") Submit
