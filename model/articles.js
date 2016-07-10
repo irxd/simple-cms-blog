@@ -1,4 +1,4 @@
-var mongoose = require('mongoose');  
+var mongoose = require('mongoose');
 
 var articleSchema = new mongoose.Schema({  
   title: { type : String },

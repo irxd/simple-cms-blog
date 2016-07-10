@@ -3,6 +3,8 @@ var router = express.Router();
 var mongoose = require('mongoose'); 
 var bodyParser = require('body-parser'); 
 var methodOverride = require('method-override');
+var passport = require('passport');
+var author = require('../model/authors');
 
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(methodOverride(function(req, res) {
@@ -24,7 +26,8 @@ router.get('/', function(req, res, next) {
         html: function() {
           res.render('index', {
             title: 'Isi Content',
-            "articles" : articles
+            "articles" : articles,
+            user : req.user
           });
         },
         //JSON responds
@@ -38,12 +41,45 @@ router.get('/', function(req, res, next) {
 
 //Page for login
 router.get('/login', function(req, res) {
-  res.render('login', { title: 'Login' });
+    res.render('login', { user : req.user, error : req.flash('error')});
+});
+
+router.post('/login', passport.authenticate('local', { failureRedirect: '/login', failureFlash: true }), function(req, res, next) {
+    req.session.save(function (err) {
+        if (err) {
+            return next(err);
+        }
+        res.redirect('/');
+    });
 });
 
 //Page for signup
 router.get('/signup', function(req, res) {
   res.render('signup', { title: 'Signup' });
 });
+
+router.post('/signup', function(req, res, next) {
+    author.register(new author({ username : req.body.username }), req.body.password, function(err, author) {
+        if (err) {
+          return res.render('signup', { error : err.message });
+        }
+
+        passport.authenticate('local')(req, res, function () {
+            req.session.save(function (err) {
+                if (err) {
+                    return next(err);
+                }
+                res.redirect('/');
+            });
+        });
+    });
+});
+
+//logout
+router.get('/logout', function(req, res) {
+  req.logout();
+  res.redirect('/');
+});
+
 
 module.exports = router;

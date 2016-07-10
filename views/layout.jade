@@ -17,8 +17,14 @@ html
         a.item(href='/categories')
           | Category
         .right.menu
-          a.ui.item(href='/login')
-            | Login
+          if (!user)
+            a.ui.item(href='/login')
+              | Login
+          if (user)
+            a.ui.item(href='/logout')
+              | Logout
+            a.ui.item(href='')
+              #{user.username}
       .ui.divider
       br
       block content

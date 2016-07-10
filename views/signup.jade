@@ -2,7 +2,7 @@ extends layout
 
 block content
   .ui.column.stackable.center.page.grid
-      form.ui.six.wide.column.form.segment#formAddArticle(name="addUser",method="post",action="/users")
+      form.ui.six.wide.column.form.segment#formAddArticle(name="addUser",method="post",action="/signup")
         // login input fields go here
         .field
           input#inputUsername(type="text", placeholder="Your username", name="username")

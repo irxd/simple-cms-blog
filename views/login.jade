@@ -1,8 +1,8 @@
-extends layout
+extends layout 
 
 block content
   .ui.column.stackable.center.page.grid
-      form.ui.six.wide.column.form.segment
+      form.ui.six.wide.column.form.segment#formLogin(method="post",action="/login")
         // login input fields go here
         .field
           input#inputUsername(type="text", placeholder="Your username", name="username")

@@ -4,15 +4,20 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var mongoose = require('mongoose'); 
+var passport = require('passport');
+var session = require('express-session');
+var LocalStrategy = require('passport-local').Strategy;
+var flash = require('connect-flash');
 
 var db = require('./model/db');
 var article = require('./model/articles');
-var user = require('./model/users');
+var author = require('./model/authors');
+//var user = require('./model/users');
 //var categories = require('./model/categories');
 
 var routes = require('./routes/index');
 var articles = require('./routes/articles');
-var users = require('./routes/users');
 //var users = require('./routes/users');
 
 var app = express();
@@ -29,11 +34,25 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+//for passport
+app.use(session({
+  secret: 'younameit',
+  resave: false,
+  saveUninitialized: false 
+}));
+app.use(passport.initialize());
+app.use(flash());
+app.use(passport.session()); // persistent login sessions
+
 app.use('/', routes);
 app.use('/articles', articles);
-app.use('/users', users);
 //app.use('/categories', categories)
 //app.use('/users', users);
+
+// passport config
+passport.use(new LocalStrategy(author.authenticate()));
+passport.serializeUser(author.serializeUser());
+passport.deserializeUser(author.deserializeUser());
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

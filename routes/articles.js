@@ -3,6 +3,8 @@ var router = express.Router();
 var mongoose = require('mongoose'); 
 var bodyParser = require('body-parser'); 
 var methodOverride = require('method-override');
+var passport = require('passport');
+var author = require('../model/authors');
 
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(methodOverride(function(req, res) {
@@ -25,7 +27,8 @@ router.route('/')
           html: function() {
             res.render('articles/index', {
             title: 'All my Articles',
-            "articles" : articles
+            "articles" : articles,
+            user : req.user
             });
           },
           //JSON responds
@@ -71,7 +74,10 @@ router.route('/')
 
 //Page for creating new article
 router.get('/new', function(req, res) {
-  res.render('articles/new', { title: 'Add New Article' });
+  res.render('articles/new', { 
+    title: 'Add New Article',
+    user : req.user 
+  });
 });
 
 //Middleware to validate id
@@ -110,7 +116,8 @@ router.route('/:id')
         res.format({
           html: function(){
               res.render('articles/show', {
-                "article" : article
+                "article" : article,
+                user : req.user 
               });
           },
           json: function(){
@@ -135,7 +142,8 @@ router.route('/:id/edit')
 	        html: function() {
 	          res.render('articles/edit', {
 	            title: 'Article' + article._id,
-	            "article" : article
+	            "article" : article,
+              user : req.user 
 	           });
 	        },
 	        //JSON responds
