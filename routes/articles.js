@@ -89,31 +89,6 @@ router.get('/new', function(req, res) {
   });    
 });
 
-router.route('/')
-  //Get blog content for url/articles
-  .get(isLoggedIn, function(req, res, next) {
-    mongoose.model('Article').find({}, function (err, articles) {
-      if (err) {
-        return console.error(err);
-      } else {
-        res.format({
-          //HTML responds -> articles/index.jade
-          html: function() {
-            res.render('articles/index', {
-            title: 'All my Articles',
-            "articles" : articles,
-            user : req.user
-            });
-          },
-          //JSON responds
-          json: function() {
-            res.json(articles);
-          }
-        });
-      }     
-    });
-  })
-
 //Middleware to validate id
 router.param('id', function(req, res, next, id) {
   //Find the ID in the Mongo

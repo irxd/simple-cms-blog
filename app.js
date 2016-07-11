@@ -19,6 +19,7 @@ var category = require('./model/categories');
 var routes = require('./routes/index');
 var articles = require('./routes/articles');
 var categories = require('./routes/categories');
+var tags = require('./routes/tags');
 //var users = require('./routes/users');
 
 var app = express();
@@ -47,7 +48,8 @@ app.use(passport.session()); // persistent login sessions
 
 app.use('/', routes);
 app.use('/articles', articles);
-app.use('/categories', categories)
+app.use('/categories', categories);
+app.use('/tags', tags);
 //app.use('/users', users);
 
 // passport config
