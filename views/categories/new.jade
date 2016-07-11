@@ -1,0 +1,16 @@
+extends ../layout
+
+block content
+      .ui.grid
+        .four.wide.column
+          .ui.secondary.vertical.pointing.fluid.menu
+            a.item(href='/categories')
+              | All
+            a.item(href='/categories/new')
+              | New
+        .twelve.wide.column
+          form.ui.form#formAddCategory(name="addCategory",method="post",action="/categories")
+            .field
+              label Name
+              input#inputTitle(type="text", placeholder="ex. Tips", name="name")
+            button.ui.button#btnSubmit(type="submit") Submit

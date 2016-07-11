@@ -21,6 +21,14 @@ block content
               label Body
               textarea#inputBody(type="text", placeholder="ex. Once Upon A Time", name="body")
             .field
+              label Category
+              select#select.ui.dropdown(name='category')
+                  option(value="") Category
+                  - each category, i in categories
+                    option(value='#{category.name}') #{category.name}
+            .field
               label Tags
-              input#inputTags(type="text", placeholder="ex. story, tips", name="tags")
+              .ui.left.icon.input
+                i.tags.icon
+                input#inputTags(type="text", placeholder="ex. story, tips", name="tags")
             button.ui.button#btnSubmit(type="submit") Submit

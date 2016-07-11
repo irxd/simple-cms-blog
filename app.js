@@ -13,11 +13,12 @@ var flash = require('connect-flash');
 var db = require('./model/db');
 var article = require('./model/articles');
 var author = require('./model/authors');
+var category = require('./model/categories');
 //var user = require('./model/users');
-//var categories = require('./model/categories');
 
 var routes = require('./routes/index');
 var articles = require('./routes/articles');
+var categories = require('./routes/categories');
 //var users = require('./routes/users');
 
 var app = express();
@@ -46,7 +47,7 @@ app.use(passport.session()); // persistent login sessions
 
 app.use('/', routes);
 app.use('/articles', articles);
-//app.use('/categories', categories)
+app.use('/categories', categories)
 //app.use('/users', users);
 
 // passport config

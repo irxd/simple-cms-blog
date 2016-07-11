@@ -1,0 +1,22 @@
+extends ../layout 
+
+block content
+      .ui.grid
+        .four.wide.column
+          .ui.secondary.vertical.pointing.fluid.menu
+            a.item(href='/categories')
+              | All
+            a.item(href='/categories/new')
+              | New
+        .twelve.wide.column
+          .ul
+            - each category, i in categories
+                li
+                    = category.name
+                    = category._id
+                    form(action='/categories/#{category._id}/edit',method='post',enctype='application/x-www-form-urlencoded')
+                        input(type='hidden',value='DELETE',name='_method')
+                        button(type='submit').
+                            Delete
+                    p 
+                        a(href='/categories/#{category._id}/edit') Edit

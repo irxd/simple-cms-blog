@@ -4,7 +4,8 @@ Simple cms for blog content
 Not yet completed
 
 list todo:
--add more crud operation
--add categories
--authentication
--add editor
+-draft mechanism
+-more authentication
+-editor
+-tagging
+-handler

@@ -17,7 +17,7 @@ router.use(methodOverride(function(req, res) {
 
 router.route('/')
   //Get blog content for url/articles
-  .get(function(req, res, next) {
+  .get(isLoggedIn, function(req, res, next) {
     mongoose.model('Article').find({}, function (err, articles) {
       if (err) {
         return console.error(err);
@@ -44,12 +44,14 @@ router.route('/')
     //Get values from forms in url/articles/new
     var title = req.body.title;
     var body = req.body.body;
+    var category = req.body.category;
     var tags = req.body.tags;
     //Create function for mongo
     mongoose.model('Article').create({
       title : title,
       body : body,
-      tags : tags
+      category : category,
+      tags : tags,
     }, function (err, article) {
         if (err) {
           res.send("POST failed to save data.");
@@ -74,11 +76,43 @@ router.route('/')
 
 //Page for creating new article
 router.get('/new', function(req, res) {
-  res.render('articles/new', { 
-    title: 'Add New Article',
-    user : req.user 
-  });
+  mongoose.model('Category').find({}, function (err, categories) {
+    if (err) {
+      return console.error(err);
+    } else {
+      res.render('articles/new', { 
+      title: 'Add New Article',
+      "categories" : categories,
+      user : req.user 
+    });
+    }
+  });    
 });
+
+router.route('/')
+  //Get blog content for url/articles
+  .get(isLoggedIn, function(req, res, next) {
+    mongoose.model('Article').find({}, function (err, articles) {
+      if (err) {
+        return console.error(err);
+      } else {
+        res.format({
+          //HTML responds -> articles/index.jade
+          html: function() {
+            res.render('articles/index', {
+            title: 'All my Articles',
+            "articles" : articles,
+            user : req.user
+            });
+          },
+          //JSON responds
+          json: function() {
+            res.json(articles);
+          }
+        });
+      }     
+    });
+  })
 
 //Middleware to validate id
 router.param('id', function(req, res, next, id) {
@@ -215,5 +249,16 @@ router.route('/:id/edit')
 	    }
 	  });
 	});
+
+// route middleware to make sure a user is logged in
+function isLoggedIn(req, res, next) {
+
+    // if user is authenticated in the session, carry on 
+    if (req.isAuthenticated())
+        return next();
+
+    // if they aren't redirect them to the home page
+    res.redirect('/');
+}
 
 module.exports = router;
