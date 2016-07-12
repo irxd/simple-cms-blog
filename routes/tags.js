@@ -26,7 +26,7 @@ router.get('/:tag', function(req, res, next) {
 //  query = {};
 //  query[tags]
 //  console.log(b);
-  mongoose.model('Article').find({tags : req.params.tag}, function (err, articles) {
+  mongoose.model('Article').find({tags : req.params.tag, draft : false}, function (err, articles) {
     if (err) {
       return console.error(err);
     } else {
