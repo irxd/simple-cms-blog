@@ -154,7 +154,8 @@ router.route('/:id/edit')
 	          res.render('articles/edit', {
 	            title: 'Article' + article._id,
 	            "article" : article,
-              user : req.user 
+              user : req.user,
+              draft : article.draft 
 	           });
 	        },
 	        //JSON responds
@@ -171,7 +172,7 @@ router.route('/:id/edit')
     var title = req.body.title;
     var body = req.body.body;
     var category = req.body.category;
-    var tags = req.body.tags;
+    var tags = req.body.tags.split(',');
     var draft = req.body.draft;
 	  //Find article by ID
 	  mongoose.model('Article').findById(req.id, function (err, article) {

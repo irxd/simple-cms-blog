@@ -4,11 +4,11 @@ block content
       .ui.grid
         .four.wide.column
           .ui.secondary.vertical.pointing.fluid.menu
-            a.item
+            a.item(href='/articles')
               | All
-            a.item
-              | Posted
-            a.item
+            a.item(href='/articles/published')
+              | Published
+            a.item(href='/articles/draft')
               | Draft
             a.item(href='/articles/new')
               | New

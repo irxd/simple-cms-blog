@@ -4,11 +4,11 @@ block content
      .ui.grid
         .four.wide.column
           .ui.secondary.vertical.pointing.fluid.menu
-            a.item
+            a.item(href='/articles')
               | All
-            a.item
-              | Posted
-            a.item
+            a.item(href='/articles/published')
+              | Published
+            a.item(href='/articles/draft')
               | Draft
             a.item(href='/articles/new')
               | New
@@ -19,7 +19,7 @@ block content
               input#updateTitle(type="text", value='#{article.title}', placeholder="ex. Black Knight", name="title")
             .field
               label Body
-              textarea#updateBody(type="text", name="body") #{article.body}
+              textarea#inputBody(type="text", name="body") #{article.body}
             .field
               label Category
               select#select.ui.dropdown(name='category', value='#{article.category}')
@@ -33,5 +33,9 @@ block content
                 input#inputTags(type="text", value='#{article.tags}', placeholder="ex. story, tips", name="tags")
             .field
               label Save as draft
-              input#updateDraft(type="checkbox", name="draft", value='#{article.draft}',)
+              if (draft)
+                input#updateDraft(type="checkbox", name="draft", checked="checked")
+              if !(draft)
+                input#updateDraft(type="checkbox", name="draft")
+              input(type='hidden',value='PUT',name='_method') 
             button.ui.button#btnSubmit(type="submit") Update
