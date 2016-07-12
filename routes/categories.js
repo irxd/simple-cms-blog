@@ -40,7 +40,7 @@ router.route('/')
     });
   })
   //Create new category
-  .post(function(req, res) {
+  .post(isLoggedIn, function(req, res) {
     //Get values from forms in url/categories/new
     var name= req.body.name;
     //Create function for mongo
@@ -57,7 +57,9 @@ router.route('/')
               html: function() {
                 res.location("categories");
                 //Redirect to url/categories after creating categories
-                res.redirect("/categories");
+                res.redirect("/categories", {
+                  user : req.user
+                });
               },
               //JSON responds
               json: function() {
@@ -69,7 +71,7 @@ router.route('/')
   });
 
 //Page for creating new category
-router.get('/new', function(req, res) {
+router.get('/new', isLoggedIn, function(req, res) {
   res.render('categories/new', { 
     title: 'Add New Categoty',
     user : req.user 
@@ -104,7 +106,7 @@ router.param('id', function(req, res, next, id) {
 
 router.route('/:id/edit')
 	//Get category by Mongo ID
-	.get(function(req, res) {
+	.get(isLoggedIn, function(req, res) {
 	  //Search category in Mongo
 	  mongoose.model('Category').findById(req.id, function (err, category) {
 	    if (err) {
@@ -129,7 +131,7 @@ router.route('/:id/edit')
 	  });
 	})
 	//Update category by ID
-	.put(function(req, res) {
+	.put(isLoggedIn, function(req, res) {
 	  //Get values from forms in url/categories/edit
     var name = req.body.name;
 	  //Find category by ID
@@ -144,7 +146,9 @@ router.route('/:id/edit')
 	          //HTML responds
 	          res.format({
 	            html: function(){
-	              res.redirect("/categories");
+	              res.redirect("/categories", {
+                  user : req.user
+                });
 	            },
 	            //JSON responds
 	            json: function(){
@@ -156,7 +160,7 @@ router.route('/:id/edit')
 	  });
 	})
 	//Delete category by ID
-	.delete(function (req, res){
+	.delete(isLoggedIn, function (req, res){
 	  //Find category by ID
 	  mongoose.model('Category').findById(req.id, function (err, category) {
 	    if (err) {
@@ -171,7 +175,9 @@ router.route('/:id/edit')
 	          res.format({
 	            //HTML responds -> url/categories
 	            html: function(){
-	            res.redirect("/categories");
+	            res.redirect("/categories", {
+                user : req.user
+              });
 	            },
 	            //JSON responds
 	            json: function(){
