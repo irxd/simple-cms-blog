@@ -19,7 +19,7 @@ block content
               input#inputTitle(type="text", placeholder="ex. Black Knight", name="title")
             .field
               label Body
-              textarea#inputBody(type="text", placeholder="ex. Once Upon A Time", name="body")
+              textarea#inputBody(type="text", name="body")
             .field
               label Category
               select#select.ui.dropdown(name='category')
@@ -31,4 +31,7 @@ block content
               .ui.left.icon.input
                 i.tags.icon
                 input#inputTags(type="text", placeholder="ex. story, tips", name="tags")
+            .field
+              label Save as draft
+              input#inputDraft(type="checkbox", name="draft")
             button.ui.button#btnSubmit(type="submit") Submit

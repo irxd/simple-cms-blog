@@ -1,17 +1,37 @@
 extends ../layout
 
 block content
-	h1.
-		Article ID #{article._id}
-	form(action='/articles/#{article._id}/edit',method='post',name='updateArticle',enctype='application/x-www-form-urlencoded')
-		p Title:
-			input#inputTitle(type='text', value='#{article.title}', name='title')
-		p Body:
-			input#inputBody(type='text', value='#{article.body}', name='body')
-		p Tags:
-			input#inputTags(type='text', value='#{article.tags}', name='tags')
-		p
-			input(type='hidden',value='PUT',name='_method')
-		p
-			button#btnSubmit(type='submit').
-				Update
+     .ui.grid
+        .four.wide.column
+          .ui.secondary.vertical.pointing.fluid.menu
+            a.item
+              | All
+            a.item
+              | Posted
+            a.item
+              | Draft
+            a.item(href='/articles/new')
+              | New
+        .twelve.wide.column
+          form.ui.form#formUpdateArticle(name="updateArticle",method="post",action="/articles/#{article._id}/edit")
+            .field
+              label Title
+              input#updateTitle(type="text", value='#{article.title}', placeholder="ex. Black Knight", name="title")
+            .field
+              label Body
+              textarea#updateBody(type="text", name="body") #{article.body}
+            .field
+              label Category
+              select#select.ui.dropdown(name='category', value='#{article.category}')
+                  option(value="#{article.category}") Category
+                  
+                    
+            .field
+              label Tags
+              .ui.left.icon.input
+                i.tags.icon
+                input#inputTags(type="text", value='#{article.tags}', placeholder="ex. story, tips", name="tags")
+            .field
+              label Save as draft
+              input#updateDraft(type="checkbox", name="draft", value='#{article.draft}',)
+            button.ui.button#btnSubmit(type="submit") Update

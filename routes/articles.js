@@ -46,12 +46,14 @@ router.route('/')
     var body = req.body.body;
     var category = req.body.category;
     var tags = req.body.tags;
+    var draft = req.body.draft;
     //Create function for mongo
     mongoose.model('Article').create({
       title : title,
       body : body,
       category : category,
       tags : tags,
+      draft : draft
     }, function (err, article) {
         if (err) {
           res.send("POST failed to save data.");
@@ -168,14 +170,18 @@ router.route('/:id/edit')
 	  //Get values from forms in url/articles/edit
     var title = req.body.title;
     var body = req.body.body;
+    var category = req.body.category;
     var tags = req.body.tags;
+    var draft = req.body.draft;
 	  //Find article by ID
 	  mongoose.model('Article').findById(req.id, function (err, article) {
 	    //Update article
 	    article.update({
         title : title,
         body : body,
-        tags : tags
+        category : category,
+        tags : tags,
+        draft : draft
 	    }, function (err, articleID) {
 	        if (err) {
 	          res.send("PUT error updating data: " + err);

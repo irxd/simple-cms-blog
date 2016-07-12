@@ -7,7 +7,8 @@ var articleSchema = new mongoose.Schema({
   title: { type : String },
   body: { type : String },
   category: { type : String },
-  tags: { type: [], get: getTags, set: setTags }
+  tags: { type : [], get: getTags, set: setTags },
+  draft: { type : Boolean }
 },
 {
   timestamps: true
