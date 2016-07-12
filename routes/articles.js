@@ -91,6 +91,54 @@ router.get('/new', function(req, res) {
   });    
 });
 
+//Page for published article
+router.get('/published', function(req, res) {
+  mongoose.model('Article').find({draft : false}, function (err, articles) {
+      if (err) {
+        return console.error(err);
+      } else {
+        res.format({
+          //HTML responds -> articles/index.jade
+          html: function() {
+            res.render('articles/index', {
+            title: 'All Published Articles',
+            "articles" : articles,
+            user : req.user
+            });
+          },
+          //JSON responds
+          json: function() {
+            res.json(articles);
+          }
+        });
+      }     
+  });  
+});
+
+//Page for drafted article
+router.get('/draft', function(req, res) {
+  mongoose.model('Article').find({draft : true}, function (err, articles) {
+      if (err) {
+        return console.error(err);
+      } else {
+        res.format({
+          //HTML responds -> articles/index.jade
+          html: function() {
+            res.render('articles/draft', {
+            title: 'All Draft Articles',
+            "articles" : articles,
+            user : req.user
+            });
+          },
+          //JSON responds
+          json: function() {
+            res.json(articles);
+          }
+        });
+      }     
+  });  
+});
+
 //Middleware to validate id
 router.param('id', function(req, res, next, id) {
   //Find the ID in the Mongo
@@ -231,6 +279,33 @@ router.route('/:id/edit')
 	    }
 	  });
 	});
+
+router.route('/:id/publish')
+  //Get article by Mongo ID
+  .get(function(req, res) {
+    //Search article in Mongo
+    mongoose.model('Article').findById(req.id, function (err, article) {
+      //Update article
+      article.update({
+        draft : false
+      }, function (err, articleID) {
+          if (err) {
+            res.send("PUT error updating data: " + err);
+          } else {
+            //HTML responds
+            res.format({
+              html: function(){
+                res.redirect("/articles/draft");
+              },
+              //JSON responds
+              json: function(){
+                res.json(article);
+              }
+            });
+          }
+      })
+    });
+  });
 
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {

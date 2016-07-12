@@ -17,7 +17,7 @@ router.use(methodOverride(function(req, res) {
 
 //Get blog content for home
 router.get('/', function(req, res, next) {
-  mongoose.model('Article').find({}, function (err, articles) {
+  mongoose.model('Article').find({draft : false}, function (err, articles) {
     if (err) {
       return console.error(err);
     } else {
