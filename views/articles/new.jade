@@ -15,19 +15,19 @@ block content
               form#formAddArticle(role='form', name='addArticle', method='post', action='/articles')
                 .form-group
                   label Title
-                  input.form-control#inputTitle(type='text', name='title', placeholder='Title here')
+                  input.form-control#inputTitle(type='text', name='title', placeholder='Title here', required)
                 .form-group
                   label Body
-                  textarea#inputBody.form-control(rows='3', type='text', name='body') Content here
+                  textarea#inputBody.form-control(rows='3', type='text', name='body', required)
                 .form-group
                   label Category
-                  select.form-control(name='category')
+                  select.form-control(name='category', required)
                     option(hidden) Choose category
                     - each category, i in categories
                       option(value='#{category.name}') #{category.name}
                 .form-group
                   label Tags
-                  input#inputTags(type='text', name='tags', placeholder='Separate tags with ","')
+                  input#inputTags(type='text', name='tags', placeholder='Separate tags with ","', required)
                 .form-group
                   label Save as draft
                   input#inputDraft(type='checkbox', name='draft')

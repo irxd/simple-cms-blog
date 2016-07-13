@@ -19,17 +19,17 @@ block content
                     form#formAddArticle(role='form', name='formLogin', method='post', action='/login')
                       .form-group
                         label Username
-                        input.form-control#inputTitle(type='text', name='username', placeholder='Your username')
+                        input.form-control#inputTitle(type='text', name='username', placeholder='Your username', required)
                       .form-group
                         label Password
-                        input.form-control#inputTitle(type='password', name='password', placeholder='Your password')
+                        input.form-control#inputTitle(type='password', name='password', placeholder='Your password', required)
                       button.btn.btn-default(type='submit') Log In
                   #create.tab-pane.fade
                     form#formSignUp(role='form', name='addUser', method='post', action='/signup')
                       .form-group
                         label Username
-                        input.form-control#inputTitle(type='text', name='username', placeholder='Your username')
+                        input.form-control#inputTitle(type='text', name='username', placeholder='Your username', required)
                       .form-group
                         label Password
-                        input.form-control#inputTitle(type='password', name='password', placeholder='Your password')
+                        input.form-control#inputTitle(type='password', name='password', placeholder='Your password', required)
                       button.btn.btn-default(type='submit') Sign Up

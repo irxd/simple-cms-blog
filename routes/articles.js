@@ -222,7 +222,16 @@ router.route('/:id/edit')
                 res.json(article);
               }
             });
-          } else {res.send("edit not authored");}
+          } else {
+            res.format({
+              html: function() {
+                res.render('notauthor', {
+                  message: "You're not authorized.",
+                  user : req.user
+                 });
+              }
+            });
+          }
         }
       });
     });
@@ -290,7 +299,16 @@ router.route('/:id/edit')
                 });
             }
           });
-        } else { res.send("delete not authored") }
+        } else { 
+          res.format({
+              html: function() {
+                res.render('notauthor', {
+                  message: "You're not authorized.",
+                  user : req.user
+                 });
+              }
+          });
+        }
       }
     });
   });
@@ -318,7 +336,16 @@ router.route('/:id/publish')
               });
             }
         })
-      } else { res.send("publish not authored") }
+      } else {
+        res.format({
+              html: function() {
+                res.render('notauthor', {
+                  message: "You're not authorized.",
+                  user : req.user
+                 });
+              }
+        });
+      }
     });
   });
 
