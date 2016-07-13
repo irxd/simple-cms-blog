@@ -12,6 +12,6 @@ block content
               br
               a(href='/categories/#{category._id}/edit')
                 button.btn.btn-default(type='button') Edit
-              form(action='/articles/#{category._id}/edit', method='post', enctype='application/x-www-form-urlencoded')
+              form(action='/categories/#{category._id}/edit', method='post', enctype='application/x-www-form-urlencoded')
                 input(type='hidden', value='DELETE', name='_method')  
-                button.btn.btn-default(type='submit') Delete
+                button.btn.btn-default(type='submit', onclick="return confirm('Are you sure?');") Delete

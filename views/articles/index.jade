@@ -20,7 +20,7 @@ block content
                   button.btn.btn-default(type='button') Edit
                 form(action='/articles/#{article._id}/edit', method='post', enctype='application/x-www-form-urlencoded')
                   input(type='hidden', value='DELETE', name='_method')  
-                  button.btn.btn-default(type='submit') Delete
+                  button.btn.btn-default(type='submit', onclick="return confirm('Are you sure?');") Delete
             if (article.draft == true) 
               .bs-callout.bs-callout-warning
                 h4
@@ -32,9 +32,9 @@ block content
                     &nbsp
                 br
                 a(href='/articles/#{article._id}/publish')
-                  button.btn.btn-default(type='button') Publish
+                  button.btn.btn-default(type='button', onclick="return confirm('Publish this post?');") Publish
                 a(href='/articles/#{article._id}/edit')
                   button.btn.btn-default(type='button') Edit
                 form(action='/articles/#{article._id}/edit', method='post', enctype='application/x-www-form-urlencoded')
                   input(type='hidden', value='DELETE', name='_method')  
-                  button.btn.btn-default(type='submit') Delete
+                  button.btn.btn-default(type='submit', onclick="return confirm('Are you sure?');") Delete
