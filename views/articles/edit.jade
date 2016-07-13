@@ -22,10 +22,12 @@ block content
               textarea#inputBody(type="text", name="body") #{article.body}
             .field
               label Category
-              select#select.ui.dropdown(name='category', value='#{article.category}')
-                  option(value="#{article.category}") Category
-                  
-                    
+              select#select.ui.dropdown(name='category')
+                - each category, i in categories
+                  if(category.name == article.category)
+                    option(value='#{category.name}' selected) #{category.name}
+                  if !(category.name == article.category)
+                    option(value='#{category.name}') #{category.name}
             .field
               label Tags
               .ui.left.icon.input

@@ -193,31 +193,38 @@ router.route('/:id/edit')
   //Get article by Mongo ID
   .get(isLoggedIn, function(req, res) {
     //Search article in Mongo
-    mongoose.model('Article').findById(req.id, function (err, article) {
-      if (err) {
-        console.log('GET error retrieving data: ' + err);
-      } else {
-        if(article.author == req.user.username){
-      //  console.log(article.author);
-      //  console.log(req.user._id);
-          console.log('GET retrieving ID: ' + article._id);
-          res.format({
-            //HTML responds -> url/articles/edit
-            html: function() {
-              res.render('articles/edit', {
-                title: 'Article' + article._id,
-                "article" : article,
-                user : req.user,
-                draft : article.draft 
-               });
-            },
-            //JSON responds
-            json: function() {
-              res.json(article);
-            }
-          });
-        } else {res.send("edit not authored");}
-      }
+    mongoose.model('Category').find({}, function (err, category){ 
+
+      var category2 = category.map(function(categ) {return categ});
+
+      mongoose.model('Article').findById(req.id, function (err, article) {
+        if (err) {
+          console.log('GET error retrieving data: ' + err);
+        } else {
+          if(article.author == req.user.username){
+        //  console.log(article.author);
+        //  console.log(req.user._id);
+            console.log('GET retrieving ID: ' + article._id);
+            console.log(category2);
+            res.format({
+              //HTML responds -> url/articles/edit
+              html: function() {
+                res.render('articles/edit', {
+                  title: 'Article' + article._id,
+                  "article" : article,
+                  user : req.user,
+                  draft : article.draft,
+                  "categories" : category2
+                 });
+              },
+              //JSON responds
+              json: function() {
+                res.json(article);
+              }
+            });
+          } else {res.send("edit not authored");}
+        }
+      });
     });
   })
   //Update article by ID
