@@ -49,7 +49,7 @@ router.post('/login', passport.authenticate('local', { failureRedirect: '/login'
         if (err) {
             return next(err);
         }
-        res.redirect('/');
+        res.redirect('/articles');
     });
 });
 

@@ -118,7 +118,7 @@ router.get('/published', isLoggedIn, function(req, res) {
 });
 
 //Page for drafted article
-router.get('/draft', isLoggedIn, function(req, res) {
+router.get('/draft', isLoggedIn,function(req, res) {
   mongoose.model('Article').find({draft : true}, function (err, articles) {
       if (err) {
         return console.error(err);
@@ -126,7 +126,7 @@ router.get('/draft', isLoggedIn, function(req, res) {
         res.format({
           //HTML responds -> articles/index.jade
           html: function() {
-            res.render('articles/draft', {
+            res.render('articles/index', {
             title: 'All Draft Articles',
             "articles" : articles,
             user : req.user
@@ -168,7 +168,7 @@ router.param('id', function(req, res, next, id) {
 });
 
 router.route('/:id')
-  .get(isLoggedIn, function(req, res) {
+  .get(function(req, res) {
     mongoose.model('Article').findById(req.id, function (err, article) {
       if (err) {
         console.log('GET error retrieving data: ' + err);
@@ -301,24 +301,24 @@ router.route('/:id/publish')
     //Search article in Mongo
     mongoose.model('Article').findById(req.id, function (err, article) {
       //Update article
-      article.update({
-        draft : false
-      }, function (err, articleID) {
-          if (err) {
-            res.send("PUT error updating data: " + err);
-          } else {
-            //HTML responds
-            res.format({
-              html: function(){
-                res.redirect("/articles/draft");
-              },
-              //JSON responds
-              json: function(){
-                res.json(article);
-              }
-            });
-          }
-      })
+      if(article.author == req.user.username){
+        article.update({draft : false}, function (err, articleID) {
+            if (err) {
+              res.send("PUT error updating data: " + err);
+            } else {
+              //HTML responds
+              res.format({
+                html: function(){
+                  res.redirect("/articles/draft");
+                },
+                //JSON responds
+                json: function(){
+                  res.json(article);
+                }
+              });
+            }
+        })
+      } else { res.send("publish not authored") }
     });
   });
 

@@ -1,0 +1,62 @@
+doctype html
+html(lang='en')
+  head
+    title Simple CMS
+    link(href='//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css', rel='stylesheet')
+    link(href='/stylesheets/style.css', rel='stylesheet')
+    link(href='//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css', rel='stylesheet', type='text/css')
+    link(rel='stylesheet', href='//cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.2/css/selectize.min.css')
+    link(rel='stylesheet', href='//cdnjs.cloudflare.com/ajax/libs/summernote/0.8.1/summernote.css')
+    script(src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js')
+    script(src='//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js')
+    script(src="//cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.1/js/standalone/selectize.min.js")
+    script(src="//cdnjs.cloudflare.com/ajax/libs/summernote/0.8.1/summernote.js")
+    script(src="/javascripts/main.js")
+  body(style='background-color:white')
+    #wrapper
+      // Navigation
+      nav.navbar.navbar-inverse.navbar-fixed-top(role='navigation')
+        // Brand and toggle get grouped for better mobile display
+        .navbar-header
+          a.navbar-brand(href='/') Simple CMS
+        // Top Menu Items
+        ul.nav.navbar-right.top-nav
+          if (!user)
+            li.dropdown
+              a(href='/login')  Log In
+            li.dropdown
+              a(href='/signup')  Sign Up
+          if (user)
+            li.dropdown
+              a(href='/logout') Log Out
+            li.dropdown
+              a(href='#') #{user.username}
+        // Sidebar Menu Items - These collapse to the responsive navigation menu on small screens
+        .collapse.navbar-collapse.navbar-ex1-collapse
+          ul.nav.navbar-nav.side-nav
+            li
+              a(href='javascript:;', data-toggle='collapse', data-target='#demo')
+                i.fa.fa-fw.fa-file-text
+                |  Article 
+                i.fa.fa-fw.fa-caret-down
+              ul#demo.collapse
+                li
+                  a(href='/articles') All
+                li
+                  a(href='/articles/published') Published
+                li
+                  a(href='/articles/draft') Draft
+                li
+                  a(href='/articles/new') New
+            li
+              a(href='javascript:;', data-toggle='collapse', data-target='#demo2')
+                i.fa.fa-fw.fa-th-large
+                |  Category 
+                i.fa.fa-fw.fa-caret-down
+              ul#demo2.collapse
+                li
+                  a(href='/categories') All
+                li
+                  a(href='/categories/new') New
+        // /.navbar-collapse
+      block content

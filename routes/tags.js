@@ -33,7 +33,7 @@ router.get('/:tag', function(req, res, next) {
       res.format({
         //HTML responds -> index.jade
         html: function() {
-          res.render('articles/index', {
+          res.render('index', {
             title: 'Tagged article',
             "articles" : articles,
             user : req.user

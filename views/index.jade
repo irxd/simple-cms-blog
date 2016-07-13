@@ -1,15 +1,17 @@
 extends layout
 
 block content
-      .ui.grid
-        .twelve.wide.column
-          ul
-            - each article, i in articles
-                li
-                    = article.title
-                    br
-                    = article.tags
-                    br
-                    a(href='/articles/#{article._id}') Show
-                    br
-                    br
+      #page-wrapper
+        .container-fluid
+          - each article, i in articles
+            .bs-callout
+              h3
+                a(href='/articles/#{article._id}') #{article.title}
+              p #{article.author} - #{article.updatedAt}
+              i category : 
+              a(href='/categories/'+article.category) #{article.category}
+              br
+              i tags : 
+              - each tag in article.tags.split(',')
+                a(href='/tags/'+tag) #{tag}
+                &nbsp

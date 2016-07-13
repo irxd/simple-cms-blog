@@ -1,37 +1,34 @@
-extends ../layout
+extends layout
 
 block content
-      .ui.grid
-        .four.wide.column
-          .ui.secondary.vertical.pointing.fluid.menu
-            a.item(href='/articles')
-              | All
-            a.item(href='/articles/published')
-              | Published
-            a.item(href='/articles/draft')
-              | Draft
-            a.item(href='/articles/new')
-              | New
-        .twelve.wide.column
-          form.ui.form#formAddArticle(name="addArticle",method="post",action="/articles")
-            .field
-              label Title
-              input#inputTitle(type="text", placeholder="ex. Black Knight", name="title")
-            .field
-              label Body
-              textarea#inputBody(type="text", name="body")
-            .field
-              label Category
-              select#select.ui.dropdown(name='category')
-                  option(value="") Category
-                  - each category, i in categories
-                    option(value='#{category.name}') #{category.name}
-            .field
-              label Tags
-              .ui.left.icon.input
-                i.tags.icon
-                input#inputTags(type="text", placeholder="ex. story, tips", name="tags")
-            .field
-              label Save as draft
-              input#inputDraft(type="checkbox", name="draft")
-            button.ui.button#btnSubmit(type="submit") Submit
+      #page-wrapper
+        .container-fluid
+          // Page Heading
+          .row
+            .col-lg-12
+              h1.page-header
+                | Post 
+                small New Article
+          // /.row
+          .row
+            .col-lg-12
+              form#formAddArticle(role='form', name='addArticle', method='post', action='/articles')
+                .form-group
+                  label Title
+                  input.form-control#inputTitle(type='text', name='title', placeholder='Title here')
+                .form-group
+                  label Body
+                  textarea#inputBody.form-control(rows='3', type='text', name='body') Content here
+                .form-group
+                  label Category
+                  select.form-control(name='category')
+                    option(hidden) Choose category
+                    - each category, i in categories
+                      option(value='#{category.name}') #{category.name}
+                .form-group
+                  label Tags
+                  input#inputTags(type='text', name='tags', placeholder='Separate tags with ","')
+                .form-group
+                  label Save as draft
+                  input#inputDraft(type='checkbox', name='draft')
+                button.btn.btn-default(type='submit') Submit

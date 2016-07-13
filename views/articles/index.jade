@@ -1,31 +1,40 @@
-extends ../layout
+extends layout
 
 block content
-      .ui.grid
-        .four.wide.column
-          .ui.secondary.vertical.pointing.fluid.menu
-            a.item(href='/articles')
-              | All
-            a.item(href='/articles/published')
-              | Published
-            a.item(href='/articles/draft')
-              | Draft
-            a.item(href='/articles/new')
-              | New
-        .twelve.wide.column
-          .ul
-            - each article, i in articles
-                li
-                    = article.title
-                    = article.body
-                    = article._id
-                    br
-                    - each tag in article.tags.split(',')
-                      a.tag(href='/tags/'+tag)= tag
-                    form(action='/articles/#{article._id}/edit',method='post',enctype='application/x-www-form-urlencoded')
-                        input(type='hidden',value='DELETE',name='_method')
-                        button(type='submit').
-                            Delete
-                    p   
-                        a(href='/articles/#{article._id}/edit') Edit | 
-                        a(href='/articles/#{article._id}') Show
+      #page-wrapper
+        .container-fluid
+          .page-header
+            h1 All Article
+          - each article, i in articles
+            if (article.draft == false)
+              .bs-callout.bs-callout-primary
+                h4
+                  a(href='/articles/#{article._id}') #{article.title}
+                p #{article.author} - #{article.updatedAt}
+                i tags : 
+                  - each tag in article.tags.split(',')
+                    a(href='/tags/'+tag) #{tag}
+                    &nbsp
+                br
+                a(href='/articles/#{article._id}/edit')
+                  button.btn.btn-default(type='button') Edit
+                form(action='/articles/#{article._id}/edit', method='post', enctype='application/x-www-form-urlencoded')
+                  input(type='hidden', value='DELETE', name='_method')  
+                  button.btn.btn-default(type='submit') Delete
+            if (article.draft == true) 
+              .bs-callout.bs-callout-warning
+                h4
+                  a(href='/articles/#{article._id}') #{article.title}
+                p #{article.author} - #{article.updatedAt}
+                i tags : 
+                  - each tag in article.tags.split(',')
+                    a(href='/tags/'+tag) #{tag}
+                    &nbsp
+                br
+                a(href='/articles/#{article._id}/publish')
+                  button.btn.btn-default(type='button') Publish
+                a(href='/articles/#{article._id}/edit')
+                  button.btn.btn-default(type='button') Edit
+                form(action='/articles/#{article._id}/edit', method='post', enctype='application/x-www-form-urlencoded')
+                  input(type='hidden', value='DELETE', name='_method')  
+                  button.btn.btn-default(type='submit') Delete

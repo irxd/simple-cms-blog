@@ -1,13 +1,35 @@
 extends layout 
 
 block content
-  .ui.column.stackable.center.page.grid
-      form.ui.six.wide.column.form.segment#formLogin(method="post",action="/login")
-        // login input fields go here
-        .field
-          input#inputUsername(type="text", placeholder="Your username", name="username")
-        .field
-          input#inputPassword(type="password", placeholder="Your password", name="password")
-         button.ui.button#btnSubmit(type="submit") Login
-         a(href='/signup')
-           button.ui.button#btnSubmit(type="button") Sign Up
+  .container
+      .row
+        .span12
+          #loginModal
+            .modal-header
+              h3 Login here or Sign Up if you're not an Author
+            .modal-body
+                ul.nav.nav-tabs
+                  li.active
+                    a(href='#login', data-toggle='tab') Login
+                  li
+                    a(href='#create', data-toggle='tab') Sign Up
+                #myTabContent.tab-content
+                  br
+                  #login.tab-pane.active.in
+                    form#formAddArticle(role='form', name='formLogin', method='post', action='/login')
+                      .form-group
+                        label Username
+                        input.form-control#inputTitle(type='text', name='username', placeholder='Your username')
+                      .form-group
+                        label Password
+                        input.form-control#inputTitle(type='password', name='password', placeholder='Your password')
+                      button.btn.btn-default(type='submit') Log In
+                  #create.tab-pane.fade
+                    form#formSignUp(role='form', name='addUser', method='post', action='/signup')
+                      .form-group
+                        label Username
+                        input.form-control#inputTitle(type='text', name='username', placeholder='Your username')
+                      .form-group
+                        label Password
+                        input.form-control#inputTitle(type='password', name='password', placeholder='Your password')
+                      button.btn.btn-default(type='submit') Sign Up

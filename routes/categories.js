@@ -57,9 +57,7 @@ router.route('/')
               html: function() {
                 res.location("categories");
                 //Redirect to url/categories after creating categories
-                res.redirect("/categories", {
-                  user : req.user
-                });
+                res.redirect("/categories");
               },
               //JSON responds
               json: function() {
@@ -146,9 +144,7 @@ router.route('/:id/edit')
 	          //HTML responds
 	          res.format({
 	            html: function(){
-	              res.redirect("/categories", {
-                  user : req.user
-                });
+	              res.redirect("/categories");
 	            },
 	            //JSON responds
 	            json: function(){
@@ -175,9 +171,7 @@ router.route('/:id/edit')
 	          res.format({
 	            //HTML responds -> url/categories
 	            html: function(){
-	            res.redirect("/categories", {
-                user : req.user
-              });
+	            res.redirect("/categories");
 	            },
 	            //JSON responds
 	            json: function(){
@@ -191,6 +185,39 @@ router.route('/:id/edit')
 	    }
 	  });
 	});
+
+//Get blog content for home
+router.get('/:category', function(req, res, next) {
+//var tags = req.params.name;
+//var value = req.params.tag;
+//var query = {};
+//query[tags] = value;
+//  var a = req.params.tag; 
+//  var b = "'" + a + "'";
+//  query = {};
+//  query[tags]
+//  console.log(b);
+  mongoose.model('Article').find({category : req.params.category, draft : false}, function (err, articles) {
+    if (err) {
+      return console.error(err);
+    } else {
+      res.format({
+        //HTML responds -> index.jade
+        html: function() {
+          res.render('index', {
+            title: 'Tagged article',
+            "articles" : articles,
+            user : req.user
+          });
+        },
+        //JSON responds
+        json: function() {
+          res.json(articles);
+        }
+      });
+    }     
+  });
+});
 
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {

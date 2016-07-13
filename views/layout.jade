@@ -1,36 +1,31 @@
 doctype html
-html
+html(lang='en')
   head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
-    link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css')
-    link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css')
+    title Simple CMS
+    link(href='//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css', rel='stylesheet')
+    link(href='/stylesheets/style.css', rel='stylesheet')
+    link(href='//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css', rel='stylesheet', type='text/css')
     link(rel='stylesheet', href='//cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.2/css/selectize.min.css')
-    script(src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js")
-    script(src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js")
-    script(src="//cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.1/js/standalone/selectize.min.js")
     link(rel='stylesheet', href='//cdnjs.cloudflare.com/ajax/libs/summernote/0.8.1/summernote.css')
+    script(src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js')
+    script(src='//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js')
+    script(src="//cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.1/js/standalone/selectize.min.js")
     script(src="//cdnjs.cloudflare.com/ajax/libs/summernote/0.8.1/summernote.js")
     script(src="/javascripts/main.js")
-  body
-    .ui.container
-      br
-      .ui.secondary.menu
-        .header.item
-            a(href='/') Simple CMS
-        a.item(href='/articles')
-          | Article
-        a.item(href='/categories')
-          | Category
-        .right.menu
-          if (!user)
-            a.ui.item(href='/login')
-              | Login
-          if (user)
-            a.ui.item(href='/logout')
-              | Logout
-            a.ui.item(href='')
-              #{user.username}
-      .ui.divider
-      br
-      block content
+  body(style='background-color:white')
+    // Navigation
+    nav.navbar.navbar-inverse.navbar-fixed-top(role='navigation')
+      // Brand and toggle get grouped for better mobile display
+      .navbar-header
+        a.navbar-brand(href='/') Simple CMS
+      // Top Menu Items
+      ul.nav.navbar-right.top-nav
+        if (!user)
+          li.dropdown
+            a(href='/login')  Log In
+        if (user)
+          li.dropdown
+            a(href='/logout') Log Out
+          li.dropdown
+            a(href='/articles') #{user.username}
+    block content

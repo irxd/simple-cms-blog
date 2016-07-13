@@ -1,8 +1,21 @@
-extends ../layout
+extends ../layout 
 
 block content
-    h1.
-        Infophoto #{article._id}
-    p Title: #{article.title}
-    p Body: !{article.body}
-    p Tags: #{article.tags}
+      #page-wrapper
+        .container-fluid
+          .page-header
+            h1 #{article.title}
+          .bs-callout
+            p !{article.body}
+            p #{article.author} - #{article.updatedAt}
+            i tags : 
+              - each tag in article.tags.split(',')
+                a(href='/tags/'+tag) #{tag}
+                &nbsp
+            br
+            if(user)
+              a(href='/articles/#{article._id}/edit')
+                button.btn.btn-default(type='button') Edit
+              form(action='/articles/#{article._id}/edit', method='post', enctype='application/x-www-form-urlencoded')
+                input(type='hidden', value='DELETE', name='_method')  
+                button.btn.btn-default(type='submit') Delete

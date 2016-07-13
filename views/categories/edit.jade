@@ -1,0 +1,20 @@
+extends ../articles/layout
+
+block content
+      #page-wrapper
+        .container-fluid
+          // Page Heading
+          .row
+            .col-lg-12
+              h1.page-header
+                | Edit 
+                small Category
+          // /.row
+          .row
+            .col-lg-12
+              form(role='form', name='updateCategory', method='post', action='/categories/#{category._id}/edit')
+                .form-group
+                  label Name
+                  input.form-control(type='text', value='#{category.name}', name='name')
+                  input(type='hidden', value='PUT', name='_method')
+                button.btn.btn-default#btnSubmit(type='submit') Update
