@@ -7,7 +7,7 @@ block content
             .bs-callout
               h3
                 a(href='/articles/#{article._id}') #{article.title}
-              p #{article.author} - #{article.updatedAt}
+              p #{article.author} - #{moment(article.publishAt).format('DD/MM/YYYY')}
               i category : 
               a(href='/categories/'+article.category) #{article.category}
               br

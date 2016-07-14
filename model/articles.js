@@ -9,7 +9,8 @@ var articleSchema = new mongoose.Schema({
   category: { type : String },
   tags: { type : [], get: getTags, set: setTags },
   draft: { type : Boolean, default : false },
-  author: { type : String}
+  author: { type : String},
+  publishAt: {type : Date, default : Date.now }
 },
 {
   timestamps: true

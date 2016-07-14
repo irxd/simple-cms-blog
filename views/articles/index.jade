@@ -10,7 +10,7 @@ block content
               .bs-callout.bs-callout-primary
                 h4
                   a(href='/articles/#{article._id}') #{article.title}
-                p #{article.author} - #{article.updatedAt}
+                p #{article.author}
                 i tags : 
                   - each tag in article.tags.split(',')
                     a(href='/tags/'+tag) #{tag}
@@ -25,7 +25,7 @@ block content
               .bs-callout.bs-callout-warning
                 h4
                   a(href='/articles/#{article._id}') #{article.title}
-                p #{article.author} - #{article.updatedAt}
+                p #{article.author}
                 i tags : 
                   - each tag in article.tags.split(',')
                     a(href='/tags/'+tag) #{tag}

@@ -320,7 +320,7 @@ router.route('/:id/publish')
     mongoose.model('Article').findById(req.id, function (err, article) {
       //Update article
       if(article.author == req.user.username){
-        article.update({draft : false}, function (err, articleID) {
+        article.update({draft : false, publishAt : Date.now()}, function (err, articleID) {
             if (err) {
               res.send("PUT error updating data: " + err);
             } else {
