@@ -1,12 +1,13 @@
 {
   "name": "simple-cms-blog",
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "simple CMS for managing blog content",
+  "author": "Muhammad Irsyad irsyart@gmail.com",
   "private": true,
   "scripts": {
     "start": "nodemon ./bin/www"
   },
   "dependencies": {
-    "bcrypt-nodejs": "0.0.3",
     "body-parser": "~1.15.1",
     "connect-flash": "^0.1.1",
     "cookie-parser": "~1.4.3",

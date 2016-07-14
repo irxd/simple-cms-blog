@@ -14,13 +14,11 @@ var db = require('./model/db');
 var article = require('./model/articles');
 var author = require('./model/authors');
 var category = require('./model/categories');
-//var user = require('./model/users');
 
 var routes = require('./routes/index');
 var articles = require('./routes/articles');
 var categories = require('./routes/categories');
 var tags = require('./routes/tags');
-//var users = require('./routes/users');
 
 var app = express();
 
@@ -28,17 +26,16 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
+// moment js
 app.locals.moment = require("momentjs");
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-//for passport
+// for passport
 app.use(session({
   secret: 'younameit',
   resave: false,
@@ -52,7 +49,6 @@ app.use('/', routes);
 app.use('/articles', articles);
 app.use('/categories', categories);
 app.use('/tags', tags);
-//app.use('/users', users);
 
 // passport config
 passport.use(new LocalStrategy(author.authenticate()));

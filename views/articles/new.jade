@@ -4,12 +4,8 @@ block content
       #page-wrapper
         .container-fluid
           // Page Heading
-          .row
-            .col-lg-12
-              h1.page-header
-                | Post 
-                small New Article
-          // /.row
+          .page-header
+            h1 #{title}
           .row
             .col-lg-12
               form#formAddArticle(role='form', name='addArticle', method='post', action='/articles')

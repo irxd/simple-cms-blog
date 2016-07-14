@@ -15,22 +15,22 @@ router.use(methodOverride(function(req, res) {
   }
 }));
 
-//Get blog content for home
+// get all content for homepage
 router.get('/', function(req, res, next) {
   mongoose.model('Article').find({draft : false}, function (err, articles) {
     if (err) {
       return console.error(err);
     } else {
       res.format({
-        //HTML responds -> index.jade
+        // HTML responds -> index.jade
         html: function() {
           res.render('index', {
-            title: 'Isi Content',
+            title: 'All articles',
             "articles" : articles,
             user : req.user
           });
         },
-        //JSON responds
+        // JSON responds
         json: function() {
           res.json(articles);
         }
@@ -39,12 +39,14 @@ router.get('/', function(req, res, next) {
   });
 });
 
-//Page for login
+// for login page
 router.get('/login', function(req, res) {
-    res.render('login', { user : req.user, error : req.flash('error')});
+    res.render('login', { user : req.user, error : req.flash('error') });
 });
 
-router.post('/login', passport.authenticate('local', { failureRedirect: '/login', failureFlash: true }), function(req, res, next) {
+// login handler
+router.post('/login', passport.authenticate('local', {
+  failureRedirect: '/login', failureFlash: true }), function(req, res, next) {
     req.session.save(function (err) {
         if (err) {
             return next(err);
@@ -53,29 +55,26 @@ router.post('/login', passport.authenticate('local', { failureRedirect: '/login'
     });
 });
 
-//Page for signup
-router.get('/signup', function(req, res) {
-  res.render('signup', { title: 'Signup' });
-});
-
+// signup handler
 router.post('/signup', function(req, res, next) {
-    author.register(new author({ username : req.body.username }), req.body.password, function(err, author) {
-        if (err) {
-          return res.render('signup', { error : err.message });
-        }
+  author.register(new author({
+    username : req.body.username }), req.body.password, function(err, author) {
+      if (err) {
+        return res.render('signup', { error : err.message });
+      }
 
-        passport.authenticate('local')(req, res, function () {
-            req.session.save(function (err) {
-                if (err) {
-                    return next(err);
-                }
-                res.redirect('/');
-            });
-        });
-    });
+      passport.authenticate('local')(req, res, function () {
+          req.session.save(function (err) {
+              if (err) {
+                return next(err);
+              }
+              res.redirect('/articles');
+          });
+      });
+  });
 });
 
-//logout
+// for logout
 router.get('/logout', function(req, res) {
   req.logout();
   res.redirect('/');

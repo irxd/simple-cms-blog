@@ -16,22 +16,22 @@ router.use(methodOverride(function(req, res) {
 }));
 
 router.route('/')
-  //Get blog content for url/categories
+  // get all content for url/categories
   .get(isLoggedIn, function(req, res, next) {
     mongoose.model('Category').find({}, function (err, categories) {
       if (err) {
         return console.error(err);
       } else {
         res.format({
-          //HTML responds -> categories/index.jade
+          // HTML responds -> categories/index.jade
           html: function() {
             res.render('categories/index', {
-            title: 'All my Categories',
+            title: 'All Categories',
             "categories" : categories,
             user : req.user
             });
           },
-          //JSON responds
+          // JSON responds
           json: function() {
             res.json(categories);
           }
@@ -39,27 +39,27 @@ router.route('/')
       }     
     });
   })
-  //Create new category
+  // for create new category
   .post(isLoggedIn, function(req, res) {
-    //Get values from forms in url/categories/new
+    // get values from forms in url/categories/new
     var name= req.body.name;
-    //Create function for mongo
+    // create function for mongo
     mongoose.model('Category').create({
       name : name,
     }, function (err, category) {
         if (err) {
           res.send("POST failed to save data.");
         } else {
-          //Category succesfully created
+          // category succesfully created
           console.log('POST creating new category: ' + category);
             res.format({
-              //HTML responds
+              // HTML responds
               html: function() {
                 res.location("categories");
-                //Redirect to url/categories after creating categories
+                // redirect to url/categories after creating categories
                 res.redirect("/categories");
               },
-              //JSON responds
+              // JSON responds
               json: function() {
                 res.json(category);
               }
@@ -68,19 +68,19 @@ router.route('/')
     })
   });
 
-//Page for creating new category
+// page for creating new category
 router.get('/new', isLoggedIn, function(req, res) {
   res.render('categories/new', { 
-    title: 'Add New Categoty',
+    title: 'Add New Category',
     user : req.user 
   });
 });
 
-//Middleware to validate id
+// middleware to validate id
 router.param('id', function(req, res, next, id) {
-  //Find the ID in the Mongo
+  // find the id in the mongo
   mongoose.model('Category').findById(id, function (err, category) {
-    //If it isn't found, respond with 404
+    // if it isn't found, respond with 404
     if (err) {
       console.log(id + ' was not found');
       res.status(404)
@@ -102,17 +102,17 @@ router.param('id', function(req, res, next, id) {
     });
 });
 
+// for editing category by id
 router.route('/:id/edit')
-	//Get category by Mongo ID
+	// get category by id
 	.get(isLoggedIn, function(req, res) {
-	  //Search category in Mongo
 	  mongoose.model('Category').findById(req.id, function (err, category) {
 	    if (err) {
 	      console.log('GET error retrieving data: ' + err);
 	    } else {
 	      console.log('GET retrieving ID: ' + category._id);
 	      res.format({
-	        //HTML responds -> url/categories/edit
+	        // HTML responds -> categories/edit.jade
 	        html: function() {
 	          res.render('categories/edit', {
 	            title: 'Category' + category._id,
@@ -120,7 +120,7 @@ router.route('/:id/edit')
               user : req.user 
 	           });
 	        },
-	        //JSON responds
+	        // JSON responds
 	        json: function() {
 	          res.json(category);
 	        }
@@ -128,13 +128,14 @@ router.route('/:id/edit')
 	    }
 	  });
 	})
-	//Update category by ID
+
+	// update category by id
 	.put(isLoggedIn, function(req, res) {
-	  //Get values from forms in url/categories/edit
+	  // get values from forms in url/categories/edit
     var name = req.body.name;
-	  //Find category by ID
+	  // find category by id
 	  mongoose.model('Category').findById(req.id, function (err, category) {
-	    //Update category
+	    // update category
 	    category.update({
         name : name
 	    }, function (err, categoryID) {
@@ -155,25 +156,26 @@ router.route('/:id/edit')
 	    })
 	  });
 	})
-	//Delete category by ID
+
+	// delete category by id
 	.delete(isLoggedIn, function (req, res){
-	  //Find category by ID
+	  // find category by id
 	  mongoose.model('Category').findById(req.id, function (err, category) {
 	    if (err) {
 	      return console.error(err);
 	    } else {
-	      //Delete category in Mongo
+	      // delete category in mongo
 	      category.remove(function (err, category) {
 	        if (err) {
 	          return console.error(err);
 	        } else {
 	          console.log('DELETE removing ID: ' + category._id);
 	          res.format({
-	            //HTML responds -> url/categories
+	            // HTML responds
 	            html: function(){
 	            res.redirect("/categories");
 	            },
-	            //JSON responds
+	            // JSON responds
 	            json: function(){
 	              res.json({message : 'deleted',
 	              item : category
@@ -186,31 +188,22 @@ router.route('/:id/edit')
 	  });
 	});
 
-//Get blog content for home
+// get all content for url/categories/category's name
 router.get('/:category', function(req, res, next) {
-//var tags = req.params.name;
-//var value = req.params.tag;
-//var query = {};
-//query[tags] = value;
-//  var a = req.params.tag; 
-//  var b = "'" + a + "'";
-//  query = {};
-//  query[tags]
-//  console.log(b);
   mongoose.model('Article').find({category : req.params.category, draft : false}, function (err, articles) {
     if (err) {
       return console.error(err);
     } else {
       res.format({
-        //HTML responds -> index.jade
+        // HTML responds -> index.jade with all article in requested category
         html: function() {
           res.render('index', {
-            title: 'Tagged article',
+            title: 'All articles in ' + req.params.category + ' category',
             "articles" : articles,
             user : req.user
           });
         },
-        //JSON responds
+        // JSON responds
         json: function() {
           res.json(articles);
         }

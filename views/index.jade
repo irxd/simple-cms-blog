@@ -1,8 +1,10 @@
-extends layout
+extends layout 
 
 block content
       #page-wrapper
         .container-fluid
+          .page-header
+            h1 #{title}
           - each article, i in articles
             .bs-callout
               h3

@@ -1,8 +1,6 @@
 # simple-cms-blog
 Simple CMS for managing blog content
 
-Not yet completed(95%)
-
 # Implementation
 
  - Framework : Express

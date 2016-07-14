@@ -16,22 +16,22 @@ router.use(methodOverride(function(req, res) {
 }));
 
 router.route('/')
-  //Get blog content for url/articles
+  // get all content for url/articles
   .get(isLoggedIn, function(req, res, next) {
     mongoose.model('Article').find({}, function (err, articles) {
       if (err) {
         return console.error(err);
       } else {
         res.format({
-          //HTML responds -> articles/index.jade
+          // HTML responds -> articles/index.jade
           html: function() {
             res.render('articles/index', {
-            title: 'All my Articles',
+            title: 'All Articles',
             "articles" : articles,
             user : req.user
             });
           },
-          //JSON responds
+          // JSON responds
           json: function() {
             res.json(articles);
           }
@@ -39,16 +39,17 @@ router.route('/')
       }     
     });
   })
-  //Create new article
+
+  // for post new article
   .post(isLoggedIn, function(req, res) {
-    //Get values from forms in url/articles/new
+    // get values from forms in url/articles/new
     var title = req.body.title;
     var body = req.body.body;
     var category = req.body.category;
     var tags = req.body.tags;
     var draft = req.body.draft;
     var author = req.user.username;
-    //Create function for mongo
+    // create function for mongo
     mongoose.model('Article').create({
       title : title,
       body : body,
@@ -60,16 +61,16 @@ router.route('/')
         if (err) {
           res.send("POST failed to save data.");
         } else {
-          //Article succesfully created
+          // article succesfully created
           console.log('POST creating new article: ' + article);
             res.format({
-              //HTML responds
+              // HTML responds
               html: function() {
                 res.location("articles");
-                //Redirect to url/articles after creating articles
+                // redirect to url/articles after creating articles
                 res.redirect("/articles");
               },
-              //JSON responds
+              // JSON responds
               json: function() {
                 res.json(article);
               }
@@ -78,7 +79,7 @@ router.route('/')
     })
   });
 
-//Page for creating new article
+// page for creating new article
 router.get('/new', isLoggedIn, function(req, res) {
   mongoose.model('Category').find({}, function (err, categories) {
     if (err) {
@@ -93,14 +94,14 @@ router.get('/new', isLoggedIn, function(req, res) {
   });    
 });
 
-//Page for published article
+// page for published article
 router.get('/published', isLoggedIn, function(req, res) {
   mongoose.model('Article').find({draft : false}, function (err, articles) {
       if (err) {
         return console.error(err);
       } else {
         res.format({
-          //HTML responds -> articles/index.jade
+          // HTML responds -> articles/index.jade with all published articles
           html: function() {
             res.render('articles/index', {
             title: 'All Published Articles',
@@ -108,7 +109,7 @@ router.get('/published', isLoggedIn, function(req, res) {
             user : req.user
             });
           },
-          //JSON responds
+          // JSON responds
           json: function() {
             res.json(articles);
           }
@@ -117,14 +118,14 @@ router.get('/published', isLoggedIn, function(req, res) {
   });  
 });
 
-//Page for drafted article
+// page for draft article
 router.get('/draft', isLoggedIn,function(req, res) {
   mongoose.model('Article').find({draft : true}, function (err, articles) {
       if (err) {
         return console.error(err);
       } else {
         res.format({
-          //HTML responds -> articles/index.jade
+          // HTML responds -> articles/index.jade with all draft articles
           html: function() {
             res.render('articles/index', {
             title: 'All Draft Articles',
@@ -132,7 +133,7 @@ router.get('/draft', isLoggedIn,function(req, res) {
             user : req.user
             });
           },
-          //JSON responds
+          // JSON responds
           json: function() {
             res.json(articles);
           }
@@ -141,11 +142,11 @@ router.get('/draft', isLoggedIn,function(req, res) {
   });  
 });
 
-//Middleware to validate id
+// middleware to validate id
 router.param('id', function(req, res, next, id) {
-  //Find the ID in the Mongo
+  // find the id in the mongo
   mongoose.model('Article').findById(id, function (err, article) {
-    //If it isn't found, respond with 404
+    // if it isn't found, respond with 404
     if (err) {
       console.log(id + ' was not found');
       res.status(404)
@@ -167,6 +168,7 @@ router.param('id', function(req, res, next, id) {
     });
 });
 
+// get individual article by id
 router.route('/:id')
   .get(function(req, res) {
     mongoose.model('Article').findById(req.id, function (err, article) {
@@ -175,12 +177,14 @@ router.route('/:id')
       } else {
         console.log('GET retrieving ID: ' + article._id);
         res.format({
+          // HTML responds -> articles/show.jade
           html: function(){
               res.render('articles/show', {
                 "article" : article,
                 user : req.user 
               });
           },
+          // JSON responds
           json: function(){
               res.json(article);
           }
@@ -189,25 +193,23 @@ router.route('/:id')
     });
   });
 
+// for editing article by id
 router.route('/:id/edit')
-  //Get article by Mongo ID
   .get(isLoggedIn, function(req, res) {
-    //Search article in Mongo
+    // search category to display it in edit form
     mongoose.model('Category').find({}, function (err, category){ 
-
+      // map the category to pass it
       var category2 = category.map(function(categ) {return categ});
-
+      // search article by id
       mongoose.model('Article').findById(req.id, function (err, article) {
         if (err) {
           console.log('GET error retrieving data: ' + err);
         } else {
+          // check the right author
           if(article.author == req.user.username){
-        //  console.log(article.author);
-        //  console.log(req.user._id);
             console.log('GET retrieving ID: ' + article._id);
-            console.log(category2);
             res.format({
-              //HTML responds -> url/articles/edit
+              // HTML responds -> articles/edit.jade
               html: function() {
                 res.render('articles/edit', {
                   title: 'Article' + article._id,
@@ -217,7 +219,7 @@ router.route('/:id/edit')
                   "categories" : category2
                  });
               },
-              //JSON responds
+              // JSON responds
               json: function() {
                 res.json(article);
               }
@@ -236,17 +238,18 @@ router.route('/:id/edit')
       });
     });
   })
-  //Update article by ID
+
+  // update article by id
   .put(isLoggedIn, function(req, res) {
-    //Get values from forms in url/articles/edit
+    // get values from forms in url/articles/edit
     var title = req.body.title;
     var body = req.body.body;
     var category = req.body.category;
     var tags = req.body.tags.split(',');
     var draft = req.body.draft;
-    //Find article by ID
+    // find article by id
     mongoose.model('Article').findById(req.id, function (err, article) {
-      //Update article
+      // update article
       article.update({
         title : title,
         body : body,
@@ -257,12 +260,12 @@ router.route('/:id/edit')
           if (err) {
             res.send("PUT error updating data: " + err);
           } else {
-            //HTML responds
+            // HTML responds 
             res.format({
               html: function(){
-                res.redirect("/articles/" + article._id);
+                res.redirect("/articles");
               },
-              //JSON responds
+              // JSON responds
               json: function(){
                 res.json(article);
               }
@@ -271,26 +274,28 @@ router.route('/:id/edit')
       })
     });
   })
-  //Delete article by ID
+
+  // delete article by id
   .delete(isLoggedIn, function (req, res){
-    //Find article by ID
+    // find article by id
     mongoose.model('Article').findById(req.id, function (err, article) {
       if (err) {
         return console.error(err);
       } else {
-        //Delete article in Mongo
+        // check the right author
         if(article.author == req.user.username){
+          // delete article in mongo
           article.remove(function (err, article) {
             if (err) {
               return console.error(err);
             } else {
                 console.log('DELETE removing ID: ' + article._id);
                 res.format({
-                  //HTML responds -> url/articles
+                  // HTML responds
                   html: function(){
                   res.redirect("/articles");
                   },
-                  //JSON responds
+                  // JSON responds
                   json: function(){
                     res.json({message : 'deleted',
                     item : article
@@ -314,22 +319,21 @@ router.route('/:id/edit')
   });
 
 router.route('/:id/publish')
-  //Get article by Mongo ID
+  // get article by id
   .get(isLoggedIn, function(req, res) {
-    //Search article in Mongo
     mongoose.model('Article').findById(req.id, function (err, article) {
-      //Update article
+      // update article
       if(article.author == req.user.username){
         article.update({draft : false, publishAt : Date.now()}, function (err, articleID) {
             if (err) {
               res.send("PUT error updating data: " + err);
             } else {
-              //HTML responds
+              // HTML responds -> articles/draft
               res.format({
                 html: function(){
                   res.redirect("/articles/draft");
                 },
-                //JSON responds
+                // JSON responds
                 json: function(){
                   res.json(article);
                 }

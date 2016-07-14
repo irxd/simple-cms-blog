@@ -1,4 +1,4 @@
-extends ../layout 
+extends ../layout  
 
 block content
       #page-wrapper
@@ -8,6 +8,9 @@ block content
           .bs-callout
             p !{article.body}
             p #{article.author} - #{moment(article.publishAt).format('DD/MM/YYYY')}
+            i category : 
+              a(href='/categories/'+article.category) #{article.category}
+            br
             i tags : 
               - each tag in article.tags.split(',')
                 a(href='/tags/'+tag) #{tag}

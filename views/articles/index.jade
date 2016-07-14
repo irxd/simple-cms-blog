@@ -4,13 +4,16 @@ block content
       #page-wrapper
         .container-fluid
           .page-header
-            h1 All Article
+            h1 #{title}
           - each article, i in articles
             if (article.draft == false)
               .bs-callout.bs-callout-primary
                 h4
                   a(href='/articles/#{article._id}') #{article.title}
                 p #{article.author}
+                i category : 
+                  a(href='/categories/'+article.category) #{article.category}
+                br
                 i tags : 
                   - each tag in article.tags.split(',')
                     a(href='/tags/'+tag) #{tag}
@@ -26,6 +29,9 @@ block content
                 h4
                   a(href='/articles/#{article._id}') #{article.title}
                 p #{article.author}
+                i category : 
+                  a(href='/categories/'+article.category) #{article.category}
+                br
                 i tags : 
                   - each tag in article.tags.split(',')
                     a(href='/tags/'+tag) #{tag}

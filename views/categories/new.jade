@@ -3,13 +3,8 @@ extends ../articles/layout
 block content
       #page-wrapper
         .container-fluid
-          // Page Heading
-          .row
-            .col-lg-12
-              h1.page-header
-                | Post 
-                small New Category
-          // /.row
+          .page-header
+            h1 #{title}
           .row
             .col-lg-12
               form#formAddArticle(role='form', name='addCategory', method='post', action='/categories')

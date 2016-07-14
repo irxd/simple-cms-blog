@@ -15,36 +15,28 @@ router.use(methodOverride(function(req, res) {
   }
 }));
 
-//Get blog content for home
+// get all content for url/tags/tag's name
 router.get('/:tag', function(req, res, next) {
-//var tags = req.params.name;
-//var value = req.params.tag;
-//var query = {};
-//query[tags] = value;
-//  var a = req.params.tag; 
-//  var b = "'" + a + "'";
-//  query = {};
-//  query[tags]
-//  console.log(b);
-  mongoose.model('Article').find({tags : req.params.tag, draft : false}, function (err, articles) {
-    if (err) {
-      return console.error(err);
-    } else {
-      res.format({
-        //HTML responds -> index.jade
-        html: function() {
-          res.render('index', {
-            title: 'Tagged article',
-            "articles" : articles,
-            user : req.user
-          });
-        },
-        //JSON responds
-        json: function() {
-          res.json(articles);
-        }
-      });
-    }     
+  mongoose.model('Article').find({
+    tags : req.params.tag, draft : false}, function (err, articles) {
+      if (err) {
+        return console.error(err);
+      } else {
+        res.format({
+          // HTML responds -> index.jade with all tagged article
+          html: function() {
+            res.render('index', {
+              title: 'All articles Tagged as ' + req.params.tag,
+              "articles" : articles,
+              user : req.user
+            });
+          },
+          // JSON responds
+          json: function() {
+            res.json(articles);
+          }
+        });
+      }     
   });
 });
 
